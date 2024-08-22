@@ -18,7 +18,7 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const deployment = await github.repos.createDeployment({
+          const { data: deployment } = await github.rest.repos.createDeployment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: context.ref,
@@ -27,7 +27,7 @@ jobs:
             transient_environment: false,
             production_environment: true,
           });
-          return deployment.data.id;
+          core.setOutput('deployment_id', deployment.id);
 
     - name: Deploy the application
       run: echo "Deploying the application..."
@@ -37,14 +37,12 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          await github.repos.createDeploymentStatus({
+          await github.rest.repos.createDeploymentStatus({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            deployment_id: ${{
-              steps.create_deployment.outputs.deployment_id
-            }},
+            deployment_id: ${{ steps.create_deployment.outputs.deployment_id }},
             state: 'success',
-            environment_url: 'https://calgary.bibliocommons.com/',
+            environment_url: 'https://your-app-url.com',
             log_url: 'https://your-app-logs.com',
             description: 'Deployment to production was successful!',
           });
