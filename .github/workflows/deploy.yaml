@@ -16,3 +16,13 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      
+  trigger-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger testflow from different repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: thanhnhan262/webauto-playwright
+          event-type: my-event
