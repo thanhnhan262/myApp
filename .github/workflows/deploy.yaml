@@ -1,48 +1,18 @@
-name: Deploy Application
-
-on:
-  push:
-    branches:
-      - main
-
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
 jobs:
-  deploy:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Create a deployment
-      id: create_deployment
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const { data: deployment } = await github.rest.repos.createDeployment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: context.ref,
-            required_contexts: [],
-            environment: 'production',
-            transient_environment: false,
-            production_environment: true,
-          });
-          core.setOutput('deployment_id', deployment.id);
-
-    - name: Deploy the application
-      run: echo "Deploying the application..."
-      # Add your deployment steps here (e.g., uploading to a server, triggering a cloud deployment, etc.)
-
-    - name: Update deployment status with target URL
-      uses: actions/github-script@v6
-      with:
-        script: |
-          await github.rest.repos.createDeploymentStatus({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            deployment_id: ${{ steps.create_deployment.outputs.deployment_id }},
-            state: 'success',
-            environment_url: 'https://your-app-url.com',
-            log_url: 'https://your-app-logs.com',
-            description: 'Deployment to production was successful!',
-          });
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
