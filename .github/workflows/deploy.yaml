@@ -20,9 +20,10 @@ jobs:
   trigger-test:
     runs-on: ubuntu-latest
     steps:
+      - run: echo ">>>>>> ${{ secrets.PAT_TOKEN }}"
       - name: Trigger testflow from different repo
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           repository: thanhnhan262/webauto-playwright
           event-type: my-event
