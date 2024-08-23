@@ -5,34 +5,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-      - name: Install dependencies
-        run: echo "Installing dependencies ..."
-      - name: Build application
-        run: echo "Building application ..."
       - name: Deploy the application
         run: |
           # Your deployment commands here
           # For example, deploy to AWS, Heroku, etc.
           echo "Deploying application..."
-      - name: Update deployment status to success
-        uses: actions/github-script@v6
-        with:
-          script: |
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: DEPLOYMENT_ID,  # Replace with actual deployment ID if managing deployments
-              state: 'success',
-              environment_url: 'https://your-app-url.com',  # URL where app is deployed
-              description: 'Deployment successful!',
-            })
-      
   trigger-ui-test:
     needs: deploy
     runs-on: ubuntu-latest
@@ -43,3 +20,4 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }} #this secret is added in triggering repo
           repository: thanhnhan262/webauto-playwright
           event-type: run-playwright-test
+          client-payload: '{"app_url": "https://www.google.com/"}' # possiblly replace with url deploy job sends
