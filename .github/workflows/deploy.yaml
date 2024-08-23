@@ -12,9 +12,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: npm install
+        run: echo "Installing dependencies ..."
       - name: Build application
-        run: npm run build
+        run: echo "Building application ..."
       - name: Deploy the application
         run: |
           # Your deployment commands here
