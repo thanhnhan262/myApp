@@ -23,6 +23,6 @@ jobs:
       - name: Trigger testflow from different repo
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: thanhnhan262/webauto-playwright
           event-type: my-event
