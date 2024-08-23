@@ -17,14 +17,13 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       
-  trigger-test:
+  trigger-ui-test:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - run: echo ">>>>>> ${{ secrets.PAT_TOKEN }}"
-      - name: Trigger testflow from different repo
+      - name: Trigger test from another repo
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }} #this secret is added in triggering repo
           repository: thanhnhan262/webauto-playwright
-          event-type: my-event
+          event-type: run-playwright-test
